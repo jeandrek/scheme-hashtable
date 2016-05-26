@@ -11,8 +11,8 @@ scheme-hashtable is known to work on:
  * [Guile](http://www.gnu.org/software/guile/)
  * [CHICKEN Scheme](http://call-cc.org/)
  * [Chez Scheme](http://cisco.github.io/ChezScheme/)
- * [TinyScheme](http://tinyscheme.sourceforge.net)
- * [Gambit-C](http://gambitscheme.org/wiki/index.php/Main_Page)
+ * [TinyScheme](http://tinyscheme.sourceforge.net/)
+ * [Gambit-C](http://gambitscheme.org/)
 
 ## Example
 ```scheme
