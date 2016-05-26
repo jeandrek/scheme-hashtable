@@ -1,6 +1,14 @@
 # scheme-hashtable
 An implementation of a hash table written in portable Scheme
 
+## Portability
+scheme-hashtable _should_ run in any R<sup>5</sup>RS-conformant Scheme.
+
+scheme-hashtable is known to work on:
+ * [Guile](http://www.gnu.org/software/guile/)
+ * [CHICKEN Scheme](http://call-cc.org/)
+ * [TinyScheme](http://tinyscheme.sourceforge.net)
+
 ## Example
 ```scheme
 (define foo (hash-table '(foo . "foo") '(bar . "bar")))
