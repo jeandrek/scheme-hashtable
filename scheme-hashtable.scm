@@ -31,7 +31,11 @@
         ((string? obj) (hash-string obj))
         ((symbol? obj)
          (hash-string (symbol->string obj)))
-        (else #f)))
+        ((char? obj)
+         (hash-string (make-string 1 obj)))
+        ((boolean? obj)
+         (if obj 2 1))
+        (else 0)))
 
 ;;; Hash table type tag.
 (define :hash-table '(:hash-table))
