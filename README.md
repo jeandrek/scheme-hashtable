@@ -1,6 +1,9 @@
 # scheme-hashtable
 An implementation of a hash table written in portable Scheme
 
+## Copyright
+scheme-hashtable is free software licensed under the GNU General Public License version 3 or later.
+
 ## Portability
 scheme-hashtable _should_ run in any R<sup>5</sup>RS-conformant Scheme.
 
