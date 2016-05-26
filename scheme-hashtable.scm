@@ -14,20 +14,20 @@
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Maximum hash size.
-(define hashsize 101)
+(define *hash-size* 101)
 ;;; Hash a string.
 (define (hash-string str)
   (let loop ((lst (string->list str))
              (accum 0))
     (if (null? lst)
-        (modulo accum hashsize)
+        (modulo accum *hash-size*)
         (loop (cdr lst)
               (+ (char->integer (car lst))
                  (* 31 accum))))))
 ;;; Hash an object.
 (define (hash obj)
   (cond ((number? obj)
-         (modulo obj hashsize))
+         (modulo obj *hash-size*))
         ((string? obj) (hash-string obj))
         ((symbol? obj)
          (hash-string (symbol->string obj)))
@@ -48,7 +48,7 @@
 ;;; associative list procedure.
 (define (make-hash-table-helper aproc)
   (list :hash-table aproc
-        (make-vector hashsize '())))
+        (make-vector *hash-size* '())))
 
 ;;; Get the associative list procedure
 ;;; from a hash table.

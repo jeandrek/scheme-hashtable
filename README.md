@@ -51,3 +51,5 @@ Make a hash table using `equal?`, `eq?` or `eqv?` respectively for comparison of
 Get `assoc`, `assq` or `assv` depending on which predicate the hash table _ht_ uses for comparison of keys.
 ### Procedure: `(hash-table-pred ht)`
 Get the predicate the hash table _ht_ uses for comparison of keys.
+### Integer: `*hash-size*`
+The maximum hash size and the size of the hash table. Defaults to 101. Changing this will break any existing hash tables!
