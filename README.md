@@ -7,6 +7,7 @@ scheme-hashtable _should_ run in any R<sup>5</sup>RS-conformant Scheme.
 scheme-hashtable is known to work on:
  * [Guile](http://www.gnu.org/software/guile/)
  * [CHICKEN Scheme](http://call-cc.org/)
+ * [Chez Scheme](http://cisco.github.io/ChezScheme/)
  * [TinyScheme](http://tinyscheme.sourceforge.net)
 
 ## Example
