@@ -116,15 +116,16 @@
   (let ((pred? (hash-table-pred ht))
         (vec (hash-table-vector ht))
         (hashval (hash key)))
-    (let helper ((alist
-                  (vector-ref vec hashval)))
-      (cond ((null? alist) alist)
-            ((pred? (caar alist) key)
+    (let loop ((alist (vector-ref vec hashval))
+               (accum '()))
+      (cond ((null? alist)
              (vector-set! vec hashval
-                          (helper (cdr alist)))
-             (vector-ref vec hashval))
+                          (reverse accum)))
+            ((pred? (caar alist) key)
+             (loop (cdr alist) accum))
             (else
-             (helper (cdr alist)))))))
+             (loop (cdr alist)
+                   (cons (car alist) accum)))))))
 
 ;;; Convert an associative list to
 ;;; a hash table.

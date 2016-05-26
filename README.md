@@ -48,7 +48,7 @@ Convert the hash table _ht_ to an associative list.
 ### Procedure: `(hash-tablev pairs ...)`
 Make a hash table using `equal?`, `eq?` or `eqv?` respectively for comparison of keys, with the key/value pairs in _pairs_.
 ### Procedure: `(hash-table-aproc ht)`
-Get `assoc`, `assq` or `assv` depending on which predicate the hash table _ht_ uses for comparison of keys.
+Get `assoc`, `assq` or `assv` depending on which procedure the hash table _ht_ uses.
 ### Procedure: `(hash-table-pred ht)`
 Get the predicate the hash table _ht_ uses for comparison of keys.
 ### Integer: `*hash-size*`
