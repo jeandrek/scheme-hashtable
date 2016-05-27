@@ -13,6 +13,7 @@ scheme-hashtable is known to work on:
  * [Chez Scheme](http://cisco.github.io/ChezScheme/)
  * [TinyScheme](http://tinyscheme.sourceforge.net/)
  * [Gambit Scheme](http://gambitscheme.org/)
+ * [MIT/GNU Scheme](http://www.gnu.org/software/mit-scheme/)
 
 ## Example
 ```scheme
