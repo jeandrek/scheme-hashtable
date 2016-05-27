@@ -12,7 +12,7 @@ scheme-hashtable is known to work on:
  * [CHICKEN Scheme](http://call-cc.org/)
  * [Chez Scheme](http://cisco.github.io/ChezScheme/)
  * [TinyScheme](http://tinyscheme.sourceforge.net/)
- * [Gambit-C](http://gambitscheme.org/)
+ * [Gambit Scheme](http://gambitscheme.org/)
 
 ## Example
 ```scheme
