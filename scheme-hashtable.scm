@@ -1,3 +1,5 @@
+;;; -*- geiser-scheme-implementation: guile -*-
+
 ;;; Copyright (C) 2016 Jeandre Kruger
 
 ;;; This program is free software: you can redistribute it and/or modify
