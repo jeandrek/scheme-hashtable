@@ -40,7 +40,7 @@ Return #t if _obj_ is a hash table using `equal?`, `eq?` or `eqv?` respectively 
 Set _key_ in the hash table _ht_ to _val_.
 ### Procedure: `(hash-table-ref ht key)`
 Lookup the value of _key_ in the hash table _ht_.
-### Procedure: `(hash-table-remove! ht key)`
+### Procedure: `(hash-table-delete! ht key)`
 Remove _key_ from the hash table _ht_.
 ### Procedure: `(alist->hash-table alist)`
 ### Procedure: `(alist->hash-tableq alist)`
