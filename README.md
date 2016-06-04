@@ -17,7 +17,7 @@ scheme-hashtable is known to work on:
 
 ## Example
 ```scheme
-(define foo (hash-table '(foo . "foo") '(bar . "bar")))
+(define foo (hash-table 'foo "foo" 'bar "bar"))
 (hash-table-ref foo 'foo) ;; "foo"
 (hash-table-ref foo 'bar) ;; "bar"
 (hash-table-set! foo 'bar "baz")
@@ -48,10 +48,10 @@ Remove _key_ from the hash table _ht_.
 Convert the associative list _alist_ to a hash table using `equal?`, `eq?` or `eqv?` respectively for comparison of keys.
 ### Procedure: `(hash-table->alist ht)`
 Convert the hash table _ht_ to an associative list.
-### Procedure: `(hash-table pairs ...)`
-### Procedure: `(hash-tableq pairs ...)`
-### Procedure: `(hash-tablev pairs ...)`
-Make a hash table using `equal?`, `eq?` or `eqv?` respectively for comparison of keys, with the key/value pairs in _pairs_.
+### Procedure: `(hash-table args ...)`
+### Procedure: `(hash-tableq args ...)`
+### Procedure: `(hash-tablev args ...)`
+Construct a hash table.
 ### Procedure: `(hash-table-aproc ht)`
 Get `assoc`, `assq` or `assv` depending on which procedure the hash table _ht_ uses.
 ### Procedure: `(hash-table-pred ht)`

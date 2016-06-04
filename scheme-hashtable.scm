@@ -145,12 +145,25 @@
 (define (alist->hash-tablev alist)
   (alist->hash-table-helper alist assv))
 
+(define (every n lst)
+  (cond ((null? lst) '())
+        ((zero? n) (every (+ n 1) (cdr lst)))
+        (else
+         (cons (car lst)
+               (every (- n 1) (cdr lst))))))
+
+(define (zip a b)
+  (map cons a b))
+
 (define (hash-table . args)
-  (alist->hash-table args))
+  (alist->hash-table
+   (zip (every 1 args) (every 0 args))))
 (define (hash-tableq . args)
-  (alist->hash-tablev args))
+  (alist->hash-tableq
+   (zip (every 1 args) (every 0 args))))
 (define (hash-tablev . args)
-  (alist->hash-tableq args))
+  (alist->hash-tablev
+   (zip (every 1 args) (every 0 args))))
 
 ;;; Convert a hash table to an
 ;;; associative list.
