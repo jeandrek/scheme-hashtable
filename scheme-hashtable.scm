@@ -121,8 +121,7 @@
     (let loop ((alist (vector-ref vec hashval))
                (accum '()))
       (cond ((null? alist)
-             (vector-set! vec hashval
-                          (reverse accum)))
+             (vector-set! vec hashval accum))
             ((pred? (caar alist) key)
              (loop (cdr alist) accum))
             (else
@@ -170,3 +169,49 @@
 (define (hash-table->alist ht)
   (apply append
          (vector->list (hash-table-vector ht))))
+
+;;; Make a copy of an associative list.
+;;; The new one is backwards, but that should
+;;; not matter.
+(define (alist-copy alist)
+  (let loop ((alist alist)
+             (accum '()))
+    (if (null? alist)
+        accum
+        (loop
+         (cdr alist)
+         (cons (cons (caar alist) (cdar alist)) accum)))))
+
+;;; Make a copy of a hash table.
+(define (hash-table-copy ht)
+  (let ((old-vec (hash-table-vector ht))
+        (new-vec (make-vector *hash-size*)))
+    (let loop ((i 0))
+      (if (= i *hash-size*)
+          (list :hash-table (hash-table-aproc ht) new-vec)
+          (begin
+            (vector-set! new-vec i
+                         (alist-copy (vector-ref old-vec i)))
+            (loop (+ i 1)))))))
+
+;;; Create a copy of the hash table _ht_ and set the
+;;; keys to the values.
+(define (hash-table-set ht . args)
+  (let ((new (hash-table-copy ht)))
+    (let loop ((keys (every 1 args))
+               (vals (every 0 args)))
+      (if (not (null? keys))
+          (begin
+            (hash-table-set! new (car keys) (car vals))
+            (loop (cdr keys) (cdr vals)))))
+    new))
+
+;;; Create a copy of the hash table _ht_ and delete the keys.
+(define (hash-table-delete ht . keys)
+  (let ((new (hash-table-copy ht)))
+    (let loop ((keys keys))
+      (if (not (null? keys))
+          (begin
+            (hash-table-delete! new (car keys))
+            (loop (cdr keys)))))
+    new))

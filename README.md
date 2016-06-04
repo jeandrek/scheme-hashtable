@@ -51,10 +51,16 @@ Convert the hash table _ht_ to an associative list.
 ### Procedure: `(hash-table args ...)`
 ### Procedure: `(hash-tableq args ...)`
 ### Procedure: `(hash-tablev args ...)`
-Construct a hash table.
+Construct a hash table using `equal?`, `eq?` or `eqv?` respectively for comparison of keys.
 ### Procedure: `(hash-table-aproc ht)`
 Get `assoc`, `assq` or `assv` depending on which procedure the hash table _ht_ uses.
 ### Procedure: `(hash-table-pred ht)`
 Get the predicate the hash table _ht_ uses for comparison of keys.
+### Procedure: `(hash-table-copy ht)`
+Create a copy of the hash table _ht_.
+### Procedure: `(hash-table-set ht args ...)`
+Create a copy of the hash table _ht_ and set the keys to the values.
+### Procedure: `(hash-table-delete ht keys ...)`
+Create a copy of the hash table _ht_ and delete the keys.
 ### Integer: `*hash-size*`
 The maximum hash size and the number of buckets in all hash tables. Defaults to 101. Changing this will break any existing hash tables!
