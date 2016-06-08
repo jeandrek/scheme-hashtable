@@ -18,10 +18,10 @@ scheme-hashtable is known to work on:
 ## Example
 ```scheme
 (define foo (hash-table 'foo "foo" 'bar "bar"))
-(hash-table-ref foo 'foo) ;; "foo"
-(hash-table-ref foo 'bar) ;; "bar"
+(hash-table-ref foo 'foo) ;; ===> "foo"
+(hash-table-ref foo 'bar) ;; ===> "bar"
 (hash-table-set! foo 'bar "baz")
-(hash-table-ref foo 'bar) ;; "baz"
+(hash-table-ref foo 'bar) ;; ===> "baz"
 ```
 
 ## API Reference

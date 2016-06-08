@@ -40,23 +40,27 @@
         (else 0)))
 
 ;;; Hash table type tag.
-(define :hash-table '(:hash-table))
+(define hash-table-tag '(hash-table))
+
+(define (tagged-vector? obj tag)
+  (and (vector? obj)
+       (eq? (vector-ref obj 0) tag)))
 
 ;;; Return #t if obj is a hash table.
 (define (hash-table? obj)
-  (eq? (car obj) :hash-table))
+  (tagged-vector? obj hash-table-tag))
 
 ;;; Make a hash table using the specified
 ;;; associative list procedure.
 (define (make-hash-table-helper aproc)
-  (list :hash-table aproc
-        (make-vector *hash-size* '())))
+  (vector hash-table-tag aproc
+          (make-vector *hash-size* '())))
 
 ;;; Get the associative list procedure
 ;;; from a hash table.
-(define hash-table-aproc cadr)
+(define (hash-table-aproc ht) (vector-ref ht 1))
 ;;; Get the vector from a hash table.
-(define hash-table-vector caddr)
+(define (hash-table-vector ht) (vector-ref ht 2))
 
 ;;; Make a hash table using assoc.
 (define (make-hash-table)
@@ -188,7 +192,7 @@
         (new-vec (make-vector *hash-size*)))
     (let loop ((i 0))
       (if (= i *hash-size*)
-          (list :hash-table (hash-table-aproc ht) new-vec)
+          (vector hash-table-tag (hash-table-aproc ht) new-vec)
           (begin
             (vector-set! new-vec i
                          (alist-copy (vector-ref old-vec i)))
