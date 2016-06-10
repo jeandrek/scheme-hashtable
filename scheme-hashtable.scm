@@ -15,28 +15,26 @@
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;; Maximum hash size.
-(define *hash-size* 101)
 ;;; Hash a string.
-(define (hash-string str)
+(define (hash-string str size)
   (let loop ((lst (string->list str))
              (accum 0))
     (if (null? lst)
-        (modulo accum *hash-size*)
+        (modulo accum size)
         (loop (cdr lst)
               (+ (char->integer (car lst))
                  (* 31 accum))))))
 ;;; Hash an object.
-(define (hash obj)
+(define (hash obj size)
   (cond ((number? obj)
-         (modulo obj *hash-size*))
-        ((string? obj) (hash-string obj))
+         (modulo obj size))
+        ((string? obj) (hash-string obj size))
         ((symbol? obj)
-         (hash-string (symbol->string obj)))
+         (hash-string (symbol->string obj) size))
         ((char? obj)
-         (hash-string (make-string 1 obj)))
+         (hash-string (make-string 1 obj) size))
         ((boolean? obj)
-         (if obj 2 1))
+         (modulo (if obj 2 1) size))
         (else 0)))
 
 ;;; Hash table type tag.
@@ -50,27 +48,24 @@
 (define (hash-table? obj)
   (tagged-vector? obj hash-table-tag))
 
-;;; Make a hash table using the specified
-;;; associative list procedure.
-(define (make-hash-table-helper aproc)
-  (vector hash-table-tag aproc
-          (make-vector *hash-size* '())))
+(define (make-hash-table-aux aproc)
+  (lambda args
+    (let ((size (if (null? args) 101 (car args))))
+      (vector hash-table-tag aproc
+              (make-vector size '())))))
+
+;;; Make a hash table using assoc.
+(define make-hash-table (make-hash-table-aux assoc))
+;;; Make a hash table using assq.
+(define make-hash-tableq (make-hash-table-aux assq))
+;;; Make a hash table using assv.
+(define make-hash-tablev (make-hash-table-aux assv))
 
 ;;; Get the associative list procedure
 ;;; from a hash table.
 (define (hash-table-aproc ht) (vector-ref ht 1))
 ;;; Get the vector from a hash table.
 (define (hash-table-vector ht) (vector-ref ht 2))
-
-;;; Make a hash table using assoc.
-(define (make-hash-table)
-  (make-hash-table-helper assoc))
-;;; Make a hash table using assq.
-(define (make-hash-tableq)
-  (make-hash-table-helper assq))
-;;; Make a hash table using assv.
-(define (make-hash-tablev)
-  (make-hash-table-helper assv))
 
 ;;; Return #t if obj is a hash table
 ;;; using assoc.
@@ -90,8 +85,8 @@
 
 ;;; Set a value in a hash table.
 (define (hash-table-set! ht key val)
-  (let* ((hashval (hash key))
-         (vec (hash-table-vector ht))
+  (let* ((vec (hash-table-vector ht))
+         (hashval (hash key (vector-length vec)))
          (alist (vector-ref vec hashval))
          (pair ((hash-table-aproc ht) key alist)))
     (if pair
@@ -102,11 +97,11 @@
 
 ;;; Get a value from a hash table.
 (define (hash-table-ref ht key)
-  (let ((pair
-         ((hash-table-aproc ht)
-          key
-          (vector-ref (hash-table-vector ht)
-                      (hash key)))))
+  (let* ((vec (hash-table-vector ht))
+         (pair
+          ((hash-table-aproc ht)
+           key
+           (vector-ref vec (hash key (vector-length vec))))))
     (if pair
         (cdr pair)
         #f)))
@@ -119,9 +114,9 @@
 
 ;;; Delete a key from a hash table.
 (define (hash-table-delete! ht key)
-  (let ((pred? (hash-table-pred ht))
-        (vec (hash-table-vector ht))
-        (hashval (hash key)))
+  (let* ((pred? (hash-table-pred ht))
+         (vec (hash-table-vector ht))
+         (hashval (hash key (vector-length vec))))
     (let loop ((alist (vector-ref vec hashval))
                (accum '()))
       (cond ((null? alist)
@@ -135,7 +130,7 @@
 ;;; Convert an associative list to
 ;;; a hash table.
 (define (alist->hash-table-helper alist aproc)
-  (let ((ht (make-hash-table-helper aproc)))
+  (let ((ht ((make-hash-table-aux aproc))))
     (for-each
      (lambda (pair)
        (hash-table-set! ht (car pair) (cdr pair)))
@@ -188,10 +183,11 @@
 
 ;;; Make a copy of a hash table.
 (define (hash-table-copy ht)
-  (let ((old-vec (hash-table-vector ht))
-        (new-vec (make-vector *hash-size*)))
+  (let* ((old-vec (hash-table-vector ht))
+         (size (vector-length old-vec))
+         (new-vec (make-vector size)))
     (let loop ((i 0))
-      (if (= i *hash-size*)
+      (if (= i size)
           (vector hash-table-tag (hash-table-aproc ht) new-vec)
           (begin
             (vector-set! new-vec i
