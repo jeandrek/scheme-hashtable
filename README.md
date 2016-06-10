@@ -30,6 +30,7 @@ scheme-hashtable is known to work on:
 ### Procedure: `(make-hash-tablev)`
 Create and return a new hash table using `equal?`, `eq?` or `eqv?` respectively for comparison of keys.
 All hash tables are mutable.
+Optionally takes a size as an argument.
 ### Procedure: `(hash-table? obj)`
 Return #t if _obj_ is a hash table.
 ### Procedure: `(hash-table-equal? obj)`
@@ -62,5 +63,3 @@ Create a copy of the hash table _ht_.
 Create a copy of the hash table _ht_ and set the keys to the values.
 ### Procedure: `(hash-table-delete ht keys ...)`
 Create a copy of the hash table _ht_ and delete the keys.
-### Integer: `*hash-size*`
-The maximum hash size and the number of buckets in all hash tables. Defaults to 101. Changing this will break any existing hash tables!
