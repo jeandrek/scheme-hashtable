@@ -5,7 +5,7 @@ An implementation of a hash table written in portable Scheme
 scheme-hashtable is free software licensed under the GNU General Public License version 3 or later.
 
 ## Portability
-scheme-hashtable _should_ run in any R<sup>5</sup>RS-conformant Scheme.
+scheme-hashtable _should_ run in any R<sup>4</sup>RS or R<sup>5</sup>RS conformant Scheme.
 
 scheme-hashtable is known to work on:
  * [Guile](http://www.gnu.org/software/guile/)
