@@ -26,8 +26,7 @@
                  (* 31 accum))))))
 ;;; Hash an object.
 (define (hash obj size)
-  (cond ((number? obj)
-         (modulo obj size))
+  (cond ((number? obj) (modulo obj size))
         ((string? obj) (hash-string obj size))
         ((symbol? obj)
          (hash-string (symbol->string obj) size))
