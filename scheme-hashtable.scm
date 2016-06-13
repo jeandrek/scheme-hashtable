@@ -34,6 +34,11 @@
          (hash-string (make-string 1 obj) size))
         ((boolean? obj)
          (modulo (if obj 2 1) size))
+        ((pair? obj)
+         (modulo
+          (+ (hash (car obj) size)
+             (hash (cdr obj) size))
+          size))
         (else 0)))
 
 ;;; Hash table type tag.
