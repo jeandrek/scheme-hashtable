@@ -101,14 +101,10 @@
 
 ;;; Get a value from a hash table.
 (define (hash-table-ref ht key)
-  (let* ((vec (hash-table-vector ht))
-         (pair
-          ((hash-table-aproc ht)
-           key
-           (vector-ref vec (hash key (vector-length vec))))))
-    (if pair
-        (cdr pair)
-        #f)))
+  (let ((vec (hash-table-vector ht)))
+    ((hash-table-aproc ht)
+     key
+     (vector-ref vec (hash key (vector-length vec))))))
 
 (define (hash-table-pred ht)
   (let ((aproc (hash-table-aproc ht)))
@@ -133,7 +129,7 @@
 
 ;;; Convert an associative list to
 ;;; a hash table.
-(define (alist->hash-table-helper alist aproc)
+(define (alist->hash-table-aux alist aproc)
   (let ((ht ((make-hash-table-aux aproc))))
     (for-each
      (lambda (pair)
@@ -141,11 +137,11 @@
      alist)
     ht))
 (define (alist->hash-table alist)
-  (alist->hash-table-helper alist assoc))
+  (alist->hash-table-aux alist assoc))
 (define (alist->hash-tableq alist)
-  (alist->hash-table-helper alist assq))
+  (alist->hash-table-aux alist assq))
 (define (alist->hash-tablev alist)
-  (alist->hash-table-helper alist assv))
+  (alist->hash-table-aux alist assv))
 
 (define (every n lst)
   (cond ((null? lst) '())
