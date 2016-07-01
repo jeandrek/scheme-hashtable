@@ -42,7 +42,7 @@
         (else 0)))
 
 ;;; Hash table type tag.
-(define hash-table-tag '(hash-table))
+(define hash-table-tag (list 'hash-table))
 
 (define (tagged-vector? obj tag)
   (and (vector? obj)
