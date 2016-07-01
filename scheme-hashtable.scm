@@ -46,6 +46,7 @@
 
 (define (tagged-vector? obj tag)
   (and (vector? obj)
+       (> (vector-length obj) 0)
        (eq? (vector-ref obj 0) tag)))
 
 ;;; Return #t if obj is a hash table.
