@@ -24,6 +24,7 @@
         (loop (cdr lst)
               (+ (char->integer (car lst))
                  (* 31 accum))))))
+
 ;;; Hash an object.
 (define (hash obj size)
   (cond ((number? obj) (modulo obj size))
@@ -72,21 +73,20 @@
 ;;; Get the vector from a hash table.
 (define (hash-table-vector ht) (vector-ref ht 2))
 
+(define (hash-table-using aproc)
+  (lambda (obj)
+    (and (hash-table? obj)
+         (eq? (hash-table-aproc obj) aproc))))
+
 ;;; Return #t if obj is a hash table
 ;;; using assoc.
-(define (hash-table-equal? obj)
-  (and (hash-table? obj)
-       (eq? (hash-table-aproc obj) assoc)))
+(define hash-table-equal? (hash-table-using assoc))
 ;;; Return #t if obj is a hash table
 ;;; using assq.
-(define (hash-table-eq? obj)
-  (and (hash-table? obj)
-       (eq? (hash-table-aproc obj) assq)))
+(define hash-table-eq? (hash-table-using assq))
 ;;; Return #t if obj is a hash table
 ;;; using assv.
-(define (hash-table-eqv? obj)
-  (and (hash-table? obj)
-       (eq? (hash-table-aproc obj) assv)))
+(define hash-table-eqv? (hash-table-using assv))
 
 ;;; Set a value in a hash table.
 (define (hash-table-set! ht key val)
@@ -130,19 +130,18 @@
 
 ;;; Convert an associative list to
 ;;; a hash table.
-(define (alist->hash-table-aux alist aproc)
-  (let ((ht ((make-hash-table-aux aproc))))
-    (for-each
-     (lambda (pair)
-       (hash-table-set! ht (car pair) (cdr pair)))
-     alist)
-    ht))
-(define (alist->hash-table alist)
-  (alist->hash-table-aux alist assoc))
-(define (alist->hash-tableq alist)
-  (alist->hash-table-aux alist assq))
-(define (alist->hash-tablev alist)
-  (alist->hash-table-aux alist assv))
+(define (alist->hash-table-aux aproc)
+  (lambda (alist)
+    (let ((ht ((make-hash-table-aux aproc))))
+      (for-each
+       (lambda (pair)
+         (hash-table-set! ht (car pair) (cdr pair)))
+       alist)
+      ht)))
+
+(define alist->hash-table (alist->hash-table-aux assoc))
+(define alist->hash-tableq (alist->hash-table-aux assq))
+(define alist->hash-tablev (alist->hash-table-aux assv))
 
 (define (every n lst)
   (cond ((null? lst) '())
@@ -157,9 +156,11 @@
 (define (hash-table . args)
   (alist->hash-table
    (zip (every 1 args) (every 0 args))))
+
 (define (hash-tableq . args)
   (alist->hash-tableq
    (zip (every 1 args) (every 0 args))))
+
 (define (hash-tablev . args)
   (alist->hash-tablev
    (zip (every 1 args) (every 0 args))))
