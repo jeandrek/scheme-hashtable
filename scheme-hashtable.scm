@@ -84,7 +84,7 @@
 ;;; Return #t if obj is a hash table
 ;;; using assq.
 (define hash-table-eq? (hash-table-using assq))
-;;; Return #t if obj is a hash table
+;;; Return #T if obj is a hash table
 ;;; using assv.
 (define hash-table-eqv? (hash-table-using assv))
 
